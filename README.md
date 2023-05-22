@@ -1,6 +1,14 @@
-# Projeto Portal Emal Frontend
+## Projeto - Tempo contabilizado
 
-Projeto do portal emal para consulta / solicitações através da internet ao sistema já existente.
+Sistema criado para ajudar a contabilizar tudo que é feito no dia a dia.
+
+### Mais detalhes
+
+O sistema é util para quem quer contabilizar tudo que faz no dia a dia de uma maneira descomplicada, as tarefas devem ter sempre um inicio e fim no mesmo dia, sendo que pode ter vinculada nela subtarefas e tags, isso é bem importante caso a pessoa deseja criar relatórios exibindo apenas algumas informações do seu dia a dia.
+
+### Observação
+
+Para mais informações sobre o projeto, consultar o back-end.
 
 ## Como executar
 
