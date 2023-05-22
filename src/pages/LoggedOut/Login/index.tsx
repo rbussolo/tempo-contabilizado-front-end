@@ -53,7 +53,7 @@ function Login(){
     <>
       <Container>
         <div>
-          <TitlePage title="Portal de Atendimento" description="#acesseSuaConta" />
+          <TitlePage title="Tempo Contabilizado" description="#acesseSuaConta" />
         
           <form onSubmit={formik.handleSubmit}>
             <InputGroup 
@@ -80,7 +80,7 @@ function Login(){
           </form>
 
           <Options>
-            <Option link="/first-access" linkDescription="Clique aqui" description=" caso seja o primeiro acesso." />
+            <Option link="/new-user" linkDescription="Clique aqui" description=" caso não tenha cadastro." />
             <Option link="/forget-password" linkDescription="Clique aqui" description=" caso tenha esquecido a senha." />
           </Options>
         </div>

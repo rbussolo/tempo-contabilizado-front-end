@@ -52,7 +52,7 @@ function ResetPassword() {
     <>
       <Container>
         <div>
-          <TitlePage title="Portal de Atendimento" description="#definirNovaSenha" />
+          <TitlePage title="Tempo Contabilizado" description="#definirNovaSenha" />
       
           <form onSubmit={formik.handleSubmit}>
             <InputGroup
@@ -79,6 +79,7 @@ function ResetPassword() {
           </form>
 
           <Options>
+            <Option link="/new-user" linkDescription="Clique aqui" description=" caso não tenha cadastro." />
             <Option link="/login" linkDescription="Clique aqui" description=" para acessar sua conta." />
           </Options>
         </div>

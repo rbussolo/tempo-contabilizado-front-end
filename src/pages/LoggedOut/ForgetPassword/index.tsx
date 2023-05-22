@@ -70,7 +70,7 @@ function ForgetPassword() {
     <>
       <Container>
         <div>
-          <TitlePage title="Portal de Atendimento" description="#esqueceuSuaSenha" />
+          <TitlePage title="Tempo Contabilizado" description="#esqueceuSuaSenha" />
       
           <form onSubmit={formik.handleSubmit}>
             <InputGroup
@@ -104,6 +104,7 @@ function ForgetPassword() {
           </form>
 
           <Options>
+            <Option link="/new-user" linkDescription="Clique aqui" description=" caso não tenha cadastro." />
             <Option link="/login" linkDescription="Clique aqui" description=" para acessar sua conta." />
           </Options>
         </div>

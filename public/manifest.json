@@ -1,6 +1,6 @@
 {
-  "short_name": "Portal de Atendimento",
-  "name": "Portal de Atendimento - Grupo EMAL",
+  "short_name": "Tempo Contabilizado",
+  "name": "Controle de Tempo - Tempo Contabilizado",
   "icons": [
     {
       "src": "logo32.png",
@@ -8,9 +8,9 @@
       "type": "image/png"
     },
     {
-      "src": "logo192.png",
+      "src": "logo256.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "256x256"
     }
   ],
   "start_url": ".",
