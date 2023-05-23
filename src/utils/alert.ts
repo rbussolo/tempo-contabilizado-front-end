@@ -27,7 +27,8 @@ const Alert = {
       title: "Erro!",
       html: htmlError,
       icon: "error",
-      confirmButtonText: "Fechar"
+      confirmButtonText: "Fechar",
+      confirmButtonColor: "#0d6efd"
     });
   }, 
   showMessageError(message: string) {
@@ -35,7 +36,8 @@ const Alert = {
       title: "Erro!",
       text: message,
       icon: "error",
-      confirmButtonText: "Fechar"
+      confirmButtonText: "Fechar",
+      confirmButtonColor: "#0d6efd"
     });
   },
   showAxiosError(error: AxiosError): void {
@@ -57,7 +59,8 @@ const Alert = {
       title: "Sucesso!",
       text: message,
       icon: "success",
-      confirmButtonText: "Fechar"
+      confirmButtonText: "Fechar",
+      confirmButtonColor: "#0d6efd"
     });
   },
   showInfo(message: string): void {
@@ -65,7 +68,8 @@ const Alert = {
       title: "Informação!",
       html: message,
       icon: "info",
-      confirmButtonText: "Fechar"
+      confirmButtonText: "Fechar",
+      confirmButtonColor: "#0d6efd"
     });
   },
   showModal(message: string, type: string): void {
@@ -73,7 +77,8 @@ const Alert = {
       title: type === AlertType.success ? "Sucesso!" : "Erro!",
       text: message,
       icon: type === AlertType.success ? "success" : "error",
-      confirmButtonText: "Fechar"
+      confirmButtonText: "Fechar",
+      confirmButtonColor: "#0d6efd"
     });
   },
   showConfirm(message: string, onConfirmed?: () => void, onNotConfirmed?: () => void): void {
@@ -83,7 +88,8 @@ const Alert = {
       icon: "info",
       showCancelButton: true,
       cancelButtonText: "Fechar",
-      confirmButtonText: "Confirmar"
+      confirmButtonText: "Confirmar",
+      confirmButtonColor: "#0d6efd"
     }).then((result) => {
       if (result.isConfirmed && onConfirmed) {
         onConfirmed();
