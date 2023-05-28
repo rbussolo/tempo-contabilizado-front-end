@@ -2,9 +2,7 @@ export interface IUser {
   user?: {
     id: number;
     name: string;
-    cpf_cnpj: string;
     email: string;
-    cellphone: string;
     type: string;
   }
   access_token?: string;

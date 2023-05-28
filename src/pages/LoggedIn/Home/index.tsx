@@ -16,8 +16,6 @@ function Home() {
       <h3>
         Nome: {user?.name} <br />
         E-mail: {user?.email} <br />
-        CPF/CNPJ: {user?.cpf_cnpj} <br />
-        Celular: {user?.cellphone} <br />
         Tipo: {user?.type} <br />
       </h3>
       <button onClick={handleLogout}>Deslogar!</button>

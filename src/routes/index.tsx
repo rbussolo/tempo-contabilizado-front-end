@@ -13,6 +13,7 @@ import { ForgetPassword } from '../pages/LoggedOut/ForgetPassword';
 import { Login } from '../pages/LoggedOut/Login';
 import { NewUser } from '../pages/LoggedOut/NewUser';
 import { ResetPassword } from '../pages/LoggedOut/ResetPassword';
+import { UserInfo } from '../pages/LoggedIn/User/Info';
 
 const LoginLayout = () => {
   const user = useAuth().getCurrentUser();
@@ -45,7 +46,7 @@ const ProtectedRoute = () => {
     </>
   )
 };
-
+/*
 const OpenRoute = () => {
   return (
     <>
@@ -55,7 +56,7 @@ const OpenRoute = () => {
     </>
   )
 }
-
+*/
 const RoutesApp = () => {
   const user = useAuth().getCurrentUser();
 
@@ -74,6 +75,7 @@ const RoutesApp = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/order/list" element={<OrderList />} />
           <Route path="/order/create" element={<OrderCreate />} />
+          <Route path="/user/info" element={<UserInfo />} />
           <Route path="/user/list" element={<UserList />} />
           <Route path="/user/create/:mode/:user_id" element={<UserCreate />} />
           <Route path="/driver/list" element={<MotoristaList />} />

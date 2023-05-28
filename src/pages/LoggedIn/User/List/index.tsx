@@ -6,14 +6,13 @@ import { useFormik } from "formik";
 import { Button } from "../../../../components/Button";
 import { ButtonsFilter } from "../../../../components/Button/styles";
 import { InputFilters, SelectFilters } from "../../../../components/InputGroup";
-import { IconDelete, IconDisplay, IconList, IconUpdate, List, Table, Td } from "../../../../components/Table";
+import { IconDelete, IconDisplay, IconUpdate, List, Table, Td } from "../../../../components/Table";
 import { TitlePage } from "../../../../components/TitlePage";
 import { useLoading } from "../../../../contexts/LoadingProvider";
 import { ContainerFiltros, Filtros } from "../../../../global.styles";
 import { api } from "../../../../services/api";
 import { FiltersUsers, ListUsers, userTypeEnum } from "../../../../services/users";
 import { Alert } from "../../../../utils/alert";
-import { maskCpfCnpj } from "../../../../utils/mask";
 
 const UserList = function () {
   const navigate = useNavigate();
