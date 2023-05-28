@@ -13,6 +13,7 @@ import { UserList } from '../pages/LoggedIn/User/List';
 import { FirstAccess } from '../pages/LoggedOut/FirstAccess';
 import { ForgetPassword } from '../pages/LoggedOut/ForgetPassword';
 import { Login } from '../pages/LoggedOut/Login';
+import { NewUser } from '../pages/LoggedOut/NewUser';
 import { ResetPassword } from '../pages/LoggedOut/ResetPassword';
 
 const LoginLayout = () => {
@@ -66,6 +67,7 @@ const RoutesApp = () => {
         <Route element={<LoginLayout />}>
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/new-user" element={<NewUser />} />
           <Route path="/first-access" element={<FirstAccess />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
