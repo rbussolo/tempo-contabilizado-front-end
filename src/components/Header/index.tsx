@@ -33,26 +33,24 @@ function Header() {
             <NavbarToggle aria-controls="navbarHeader" />
             <NavbarCollapse id="navbarHeader">
               <Nav>
-                <NavbarBrand href="/user/list">
-                  <NavItem icon="bi bi-person-fill-gear" description="Usuários" />
+                <NavbarBrand href="/calendar">
+                  <NavItem icon="bi bi-calendar-date" description="Calendário" />
                 </NavbarBrand>
-                <NavbarBrand href="/client/list">
-                  <NavItem icon="bi bi-people-fill" description="Clientes" />
+                <NavbarBrand href="/report">
+                  <NavItem icon="bi bi-card-list" description="Relatórios" />
                 </NavbarBrand>
-                <NavbarBrand href="/driver/list">
-                  <NavItem icon="bi bi-person-vcard-fill" description="Motoristas" />
+                <NavbarBrand href="/user/info">
+                  <NavItem icon="bi bi-person-vcard" description="Usuário" />
                 </NavbarBrand>
-                <NavbarBrand href="/carrier/list">
-                  <NavItem icon="bi bi-truck" description="Transporte" />
-                </NavbarBrand>
-                <NavbarBrand href="/vehicle/list">
-                  <NavItem icon="bi bi-truck" description="Veículos" />
-                </NavbarBrand>
-                <NavbarBrand href="/order/list">
-                  <NavItem icon="bi bi-card-list" description="Pedidos" />
-                </NavbarBrand>
-                <NavbarBrand href="/invoice/list">
-                  <NavItem icon="bi bi-card-checklist" description="Notas Fiscais" />
+
+                { user.type === "adm" ? ( 
+                  <NavbarBrand href="/user/list">
+                    <NavItem icon="bi bi-person-fill-gear" description="Usuários" />
+                  </NavbarBrand>
+                ) : null }
+                
+                <NavbarBrand href="/logout">
+                  <NavItem icon="bi bi-reply" description="Sair" />
                 </NavbarBrand>
               </Nav>
             </NavbarCollapse>

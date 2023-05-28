@@ -25,7 +25,7 @@ const NavItemContainer = styled.div`
 
   i {
     margin-top: -20px;
-    margin-bottom: -15px;
+    margin-bottom: -5px;
     font-size: 40px;
     padding-top: 10px;
   }
