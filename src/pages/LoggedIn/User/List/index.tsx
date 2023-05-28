@@ -113,7 +113,6 @@ const UserList = function () {
             <SelectFilters label="Tipo" name="type" value={formik.values.type} onChange={formik.handleChange}>            
               <option value="" defaultValue="">Todos</option>
               <option value="client">Cliente</option>
-              <option value="seller">Vendedor</option>
               <option value="admin">Administrador</option>
             </SelectFilters>
             
@@ -129,7 +128,6 @@ const UserList = function () {
           <thead>
             <tr>
               <Td isIdentifier>Id</Td>
-              <Td>CPF/CNPJ</Td>
               <Td>Nome</Td>
               <Td>E-mail</Td>
               <Td>Tipo</Td>
@@ -141,7 +139,6 @@ const UserList = function () {
               return (
                 <tr key={user.id}>
                   <Td isIdentifier>{user.id}</Td>
-                  <Td>{maskCpfCnpj(user.cpf_cnpj)}</Td>
                   <Td>{user.name}</Td>
                   <Td>{user.email}</Td>
                   <Td>{userTypeEnum[user.type!]}</Td>
@@ -149,7 +146,6 @@ const UserList = function () {
                     <div>
                       <IconDisplay title="Visualizar" to={`/user/create/display/${user.id}`} />
                       <IconUpdate title="Editar" to={`/user/create/update/${user.id}`} />
-                      <IconList title="Lista de Clientes" to={`/user/client/${user.id}`} />
                       <IconDelete title="Remover" onclick={(e) => { handleDelete(user.id!) }} />
                     </div>
                   </Td>
