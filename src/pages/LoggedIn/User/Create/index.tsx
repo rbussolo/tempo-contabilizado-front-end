@@ -11,7 +11,6 @@ import { ContainerForm } from "../../../../global.styles";
 import { api } from "../../../../services/api";
 import { User } from "../../../../services/users";
 import { Alert } from "../../../../utils/alert";
-import { maskCelular, maskCpfCnpj } from "../../../../utils/mask";
 
 const UserCreate = function() {
   const navigate = useNavigate();
@@ -23,12 +22,10 @@ const UserCreate = function() {
     initialValues: {
       name: "",
       email: "",
-      cpfCnpj: "",
-      cellphone: "",
       type: "",
       password: ""
     },
-    onSubmit: ({ name, email, cpfCnpj, cellphone, type, password }) => {
+    onSubmit: ({ name, email, type, password }) => {
       const form = document.querySelector("form") as HTMLFormElement;
 
       if (!form.checkValidity()) {
@@ -45,11 +42,9 @@ const UserCreate = function() {
       const url = mode !== 'insert' ? `/users/${user_id}` : "/users";
       const user = { 
         id: mode !== 'insert' ? user_id : 0,
-        cpf_cnpj: cpfCnpj,
         name,
         email,
         type,
-        cellphone,
         password
       };
 
@@ -72,8 +67,6 @@ const UserCreate = function() {
 
         formik.setFieldValue("name", user.name);
         formik.setFieldValue("email", user.email);
-        formik.setFieldValue("cpfCnpj", maskCpfCnpj(user.cpf_cnpj));
-        formik.setFieldValue("cellphone", maskCelular(user.cellphone || ""));
         formik.setFieldValue("type", user.type);
       }).catch(err => {
         Alert.showAxiosError(err);
@@ -107,24 +100,6 @@ const UserCreate = function() {
         required
       />
 
-      <InputForm label="CPF/CNPJ" name="cpf_cnpj"
-        type="text"
-        placeholder="CPF/CNPJ da pessoa"
-        disabled={disabled}
-        value={formik.values.cpfCnpj}
-        onChange={(e) => formik.setFieldValue("cpfCnpj", maskCpfCnpj(e.target.value))}
-        required
-      />
-
-      <InputForm label="Celular" name="cellphone"
-        type="text"
-        placeholder="Celular da pessoa"
-        disabled={disabled}
-        value={formik.values.cellphone}
-        onChange={(e) => formik.setFieldValue("cellphone", maskCelular(e.target.value))}
-        required
-      />
-
       <SelectForm 
           label="Tipo" 
           name="type" 
@@ -135,7 +110,6 @@ const UserCreate = function() {
         >
         <option value="" defaultValue="">Selecione</option>
         <option value="client">Cliente</option>
-        <option value="seller">Vendedor</option>
         <option value="adm">Administrador</option>
       </SelectForm>
 
@@ -150,8 +124,15 @@ const UserCreate = function() {
       ) : null }
 
       <ButtonsFilter>
-        <Button type="submit" buttonClass="btn-primary" isLoading={false} label="Confirmar" />
-        <Button buttonClass="btn-secondary" label="Voltar" onClick={() => navigate("/user/list")} />
+        { mode === 'display' ? (
+          <Button buttonClass="btn-primary" label="Voltar" onClick={() => navigate("/user/list")} />
+        ) : (
+          <>
+            <Button type="submit" buttonClass="btn-primary" isLoading={false} label="Confirmar" />
+            <Button buttonClass="btn-secondary" label="Voltar" onClick={() => navigate("/user/list")} />
+          </>
+        ) }
+        
       </ButtonsFilter>
     </ContainerForm>
   );
