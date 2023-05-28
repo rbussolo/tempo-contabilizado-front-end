@@ -10,7 +10,6 @@ import { OrderList } from '../pages/LoggedIn/Order/List';
 import { UserClientCreate } from '../pages/LoggedIn/User/Client';
 import { UserCreate } from '../pages/LoggedIn/User/Create';
 import { UserList } from '../pages/LoggedIn/User/List';
-import { FirstAccess } from '../pages/LoggedOut/FirstAccess';
 import { ForgetPassword } from '../pages/LoggedOut/ForgetPassword';
 import { Login } from '../pages/LoggedOut/Login';
 import { NewUser } from '../pages/LoggedOut/NewUser';
@@ -68,7 +67,6 @@ const RoutesApp = () => {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/new-user" element={<NewUser />} />
-          <Route path="/first-access" element={<FirstAccess />} />
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Route>
