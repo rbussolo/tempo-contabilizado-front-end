@@ -1,8 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useFormik } from "formik";
 
-import { useAuth } from "../../../contexts/AuthProvider/useAuth";
-import { useNavigate } from "react-router-dom";
 import { InputGroup } from "../../../components/InputGroup";
 import { Button } from "../../../components/Button";
 import { Option, Options } from "../../../components/Options";
@@ -32,20 +30,20 @@ function NewUser(){
         error_msg = "É necessário informar a Senha!" ;
       } else {
         load.showLoading();
-
+        
         api.post('users/', { 
           name,
           email, 
           password 
         }).then(response => {
-          Alert.showSuccess("Usuário criado com sucesso! Ative sua conta através do e-mail cadastrado!")
+          Alert.showSuccess("Usuário criado com sucesso! Ative sua conta através do e-mail cadastrado!", "login");
         }).catch(err => {
           Alert.showAxiosError(err);
         }).finally(() => {
           load.hideLoading();
         });
       }
-
+      
       if (error_msg.length > 0) {
         Alert.showMessageError(error_msg);
       }

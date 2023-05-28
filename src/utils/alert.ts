@@ -54,13 +54,17 @@ const Alert = {
       this.showRequestError(error);
     }
   },
-  showSuccess(message: string): void {
+  showSuccess(message: string, link?: string): void {
     Swal.fire({
       title: "Sucesso!",
       text: message,
       icon: "success",
       confirmButtonText: "Fechar",
       confirmButtonColor: "#0d6efd"
+    }).then(() => {
+      if (link) {
+        window.location.replace(link);
+      }
     });
   },
   showInfo(message: string): void {
