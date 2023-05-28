@@ -1,6 +1,6 @@
 import jwt_decode from 'jwt-decode';
 import { AccessTokenDecoded, IRequestError, IRequestLogin, IUser } from './../contexts/AuthProvider/types';
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosHeaders } from 'axios';
 import { getUserLocalStorage, setUserLocalStorage } from '../contexts/AuthProvider/util';
 
 const BASE_URL = "http://localhost:3333/api/";
@@ -82,12 +82,8 @@ api.interceptors.response.use(
       return new Promise((resolve, reject) => {
         failedRequestsQueue.push({
           onSuccess: (token: string) => {
-            const originalConfig: AxiosRequestConfig = {
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-              }
-            }
+            (originalConfig.headers as AxiosHeaders).set("Content-Type", "application/json");
+            (originalConfig.headers as AxiosHeaders).set("Authorization", `Bearer ${token}`);
 
             resolve(api(originalConfig));
           },
