@@ -62,7 +62,7 @@ const UserList = function () {
 
   async function handlePage(page: number) {
     const newFilters: FiltersUsers = { ...formik.values.filters, page };
-
+    
     formik.setFieldValue("filters", newFilters);
     fetchData(newFilters);
   }
@@ -110,10 +110,10 @@ const UserList = function () {
               value={formik.values.email}
               onChange={formik.handleChange} 
             />
-            <SelectFilters label="Tipo" name="type" value={formik.values.type} onChange={formik.handleChange}>            
+            <SelectFilters label="Tipo" id="type" name="type" value={formik.values.type} onChange={formik.handleChange}>            
               <option value="" defaultValue="">Todos</option>
               <option value="client">Cliente</option>
-              <option value="admin">Administrador</option>
+              <option value="adm">Administrador</option>
             </SelectFilters>
             
             <ButtonsFilter>

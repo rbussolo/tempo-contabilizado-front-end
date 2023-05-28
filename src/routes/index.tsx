@@ -7,7 +7,6 @@ import { Home } from '../pages/LoggedIn/Home';
 import { MotoristaList } from '../pages/LoggedIn/Motorista/List';
 import { OrderCreate } from '../pages/LoggedIn/Order/Create';
 import { OrderList } from '../pages/LoggedIn/Order/List';
-import { UserClientCreate } from '../pages/LoggedIn/User/Client';
 import { UserCreate } from '../pages/LoggedIn/User/Create';
 import { UserList } from '../pages/LoggedIn/User/List';
 import { ForgetPassword } from '../pages/LoggedOut/ForgetPassword';
@@ -77,7 +76,6 @@ const RoutesApp = () => {
           <Route path="/order/create" element={<OrderCreate />} />
           <Route path="/user/list" element={<UserList />} />
           <Route path="/user/create/:mode/:user_id" element={<UserCreate />} />
-          <Route path="/user/client/:user_id" element={<UserClientCreate />} />
           <Route path="/driver/list" element={<MotoristaList />} />
           <Route path="/driver/create/:mode/:user_id" element={<UserCreate />} />
         </Route>
