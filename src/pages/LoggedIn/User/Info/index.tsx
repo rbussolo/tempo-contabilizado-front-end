@@ -26,8 +26,7 @@ const UserInfo = function() {
       disabled: true,
       changingPassword: false
     },
-    onSubmit: ({ name, email }) => {
-      console.log("OnSubmit")
+    onSubmit: ({ name, email, actualPassword, newPassword, newPasswordAgain, changingPassword }) => {
       const form = document.querySelector("form") as HTMLFormElement;
 
       if (!form.checkValidity()) {
@@ -38,23 +37,44 @@ const UserInfo = function() {
 
       form.classList.remove('was-validated');
 
-      load.showLoading();
+      if (changingPassword) {
+        load.showLoading();
 
-      const method = 'put';
-      const url = `/users/${user_id}`;
-      const user = {
-        id: user_id,
-        name,
-        email
-      };
+        const method = 'post';
+        const url = `/users/password`;
+        const data = {
+          actualPassword,
+          newPassword,
+          newPasswordAgain
+        };
 
-      api.request({ url, method, data: user }).then(response => {
-        formik.setFieldValue("disabled", true);
-      }).catch(err => {
-        Alert.showAxiosError(err);
-      }).finally(() => {
-        load.hideLoading();
-      });
+        api.request({ url, method, data }).then(response => {
+          formik.setFieldValue("disabled", true);
+          formik.setFieldValue("changingPassword", false);
+        }).catch(err => {
+          Alert.showAxiosError(err);
+        }).finally(() => {
+          load.hideLoading();
+        });
+      } else {
+        load.showLoading();
+
+        const method = 'put';
+        const url = `/users/${user_id}`;
+        const user = {
+          id: user_id,
+          name,
+          email
+        };
+
+        api.request({ url, method, data: user }).then(response => {
+          formik.setFieldValue("disabled", true);
+        }).catch(err => {
+          Alert.showAxiosError(err);
+        }).finally(() => {
+          load.hideLoading();
+        });
+      }
     }
   });
 
@@ -154,7 +174,7 @@ const UserInfo = function() {
           formik.values.disabled && !formik.values.changingPassword ? (
             <>
               <Button type="button" buttonClass="btn-primary" label="Editar Dados" onClick={editData} />
-              { false ? (<Button type="button" buttonClass="btn-primary" label="Editar Senha" onClick={editPassword} />) : null }
+              <Button type="button" buttonClass="btn-primary" label="Editar Senha" onClick={editPassword} />
             </>
           ) : formik.values.changingPassword ? (
             <>
