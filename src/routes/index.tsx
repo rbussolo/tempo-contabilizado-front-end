@@ -4,9 +4,6 @@ import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { Template } from '../components/Template';
 import { useAuth } from '../contexts/AuthProvider/useAuth';
 import { Home } from '../pages/LoggedIn/Home';
-import { MotoristaList } from '../pages/LoggedIn/Motorista/List';
-import { OrderCreate } from '../pages/LoggedIn/Order/Create';
-import { OrderList } from '../pages/LoggedIn/Order/List';
 import { UserCreate } from '../pages/LoggedIn/User/Create';
 import { UserList } from '../pages/LoggedIn/User/List';
 import { ForgetPassword } from '../pages/LoggedOut/ForgetPassword';
@@ -73,12 +70,9 @@ const RoutesApp = () => {
 
         <Route element={<ProtectedRoute />}>
           <Route path="/home" element={<Home />} />
-          <Route path="/order/list" element={<OrderList />} />
-          <Route path="/order/create" element={<OrderCreate />} />
           <Route path="/user/info" element={<UserInfo />} />
           <Route path="/user/list" element={<UserList />} />
           <Route path="/user/create/:mode/:user_id" element={<UserCreate />} />
-          <Route path="/driver/list" element={<MotoristaList />} />
           <Route path="/driver/create/:mode/:user_id" element={<UserCreate />} />
         </Route>
 
