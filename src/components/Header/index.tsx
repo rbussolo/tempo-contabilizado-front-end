@@ -20,8 +20,13 @@ function NavItem({ icon, description }: NavItemProps) {
 }
 
 function Header() {
-  const user = useAuth().getCurrentUser()?.user;
+  const auth = useAuth();
+  const user = auth.getCurrentUser()?.user;
   
+  function handleLogout() {
+    auth.logout();
+  }
+
   return (
     <Navbar expand="lg">
       <NavbarContainer className="container">
@@ -49,7 +54,7 @@ function Header() {
                   </NavbarBrand>
                 ) : null }
                 
-                <NavbarBrand href="/logout">
+                <NavbarBrand href="#" onClick={handleLogout}>
                   <NavItem icon="bi bi-reply" description="Sair" />
                 </NavbarBrand>
               </Nav>
