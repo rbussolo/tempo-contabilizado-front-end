@@ -11,7 +11,7 @@ export const ContainerActive = styled.div`
     flex-direction: column;
     justify-content: center;
 
-    padding: 1.5rem 0.75rem;
+    padding: 0.75rem;
     background-color: #f5f6f6;
 
     border: 1px solid var(--border-color);
@@ -83,10 +83,11 @@ export const ContainerActive = styled.div`
 
 export const ContainerTags = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 
   div.tag-container {
-    width: 150px;
+    min-width: 150px;
     height: 100px;
 
     display: flex;

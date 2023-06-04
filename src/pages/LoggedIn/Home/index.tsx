@@ -3,16 +3,10 @@ import { TitlePage } from "../../../components/TitlePage";
 import { ContainerForm } from "../../../global.styles";
 import { ContainerActive, ContainerTags } from "./styles";
 import React, { useEffect, useState } from "react";
-
-interface IActive {
-  id: number;
-  description: string;
-  tags: string[];
-  date: Date;
-  stats: string;
-  startTime: string;
-  stopTime?: string;
-}
+import { useLoading } from "../../../contexts/LoadingProvider";
+import { api } from "../../../services/api";
+import { Alert } from "../../../utils/alert";
+import { getDateFormatted } from "../../../utils/date";
 
 interface ITag {
   name: string;
@@ -84,33 +78,49 @@ function Tag({ name, startTime, stopTime }: ITag){
   )
 }
 
+interface IActivity {
+  id: number;
+  description: string;
+  date: Date;
+  startTime: string;
+  stopTime: string;
+  duration?: number;
+  stats: string;
+  tags: string[];
+}
+
+interface IActivities {
+  count: number;
+  activities: IActivity[]
+}
+
 function Home() {
   const navigate = useNavigate();
-  const activities: IActive[] = [{
-    id: 1,
-    description: "Trabalho",
-    tags: ["trabalho", "coplan"],
-    date: new Date(),
-    stats: 'active',
-    startTime: '10:30'
-  }, 
-  {
-    id: 2,
-    description: "Almoço",
-    tags: ["almoco", "dieta"],
-    date: new Date(),
-    stats: 'finished',
-    startTime: '12:00',
-    stopTime: '13:00'
-  },
-  {
-    id: 3,
-    description: "Reunião",
-    tags: ["reunião", "coplan"],
-    date: new Date(),
-    stats: 'active',
-    startTime: '13:30'
-  }];
+  const load = useLoading();
+  const [data, setData] = useState<IActivities>({
+    count: 0,
+    activities: []
+  });
+
+  function fetchData() {
+    const date = new Date();
+    const filter = { date: date.toISOString() }
+    
+    load.showLoading();
+
+    api.get("/activities", { params: filter }).then(response => {
+      console.log(response.data)
+      setData(response.data);
+    }).catch((err) => {
+      Alert.showAxiosError(err);
+    }).finally(() => {
+      load.hideLoading();
+    });
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <ContainerForm className="container">
@@ -118,18 +128,24 @@ function Home() {
 
       <hr />
 
-      { activities.length ? (
+      { data.activities ? (
         <>
-          { activities.map((active, index) => {
+          { data.activities.map((active, index) => {
+            const d = new Date(active.date);
+            const headerText = active.stopTime ? active.startTime + ' - ' + active.stopTime : active.startTime;
+
             return (
               <React.Fragment key={active.id}>
                 <ContainerActive>
                   <div className="active-header">
                     <div className="active-header-date">
-                      { active.date.toLocaleDateString("pt-BR") }
+                      { getDateFormatted(d) }
                     </div>
                     <div className="active-header-time">
-                      { active.startTime }
+                      { headerText }
+                    </div>
+                    <div className="active-header-duration">
+                      { active.duration ? active.duration + " min" : "Em atividade" } 
                     </div>
                   </div>
                   <div className="active-body">
@@ -163,7 +179,7 @@ function Home() {
             <hr style={{ marginTop: "15px" }} />
 
             <ContainerTags>
-              { activities.map((active, index) => {
+              { data.activities.map((active, index) => {
                 const tags = active.tags.map((tag, index) => {
                   return (
                     <Tag key={"key_" + tag} name={tag} startTime={active.startTime} stopTime={active.stopTime} />

@@ -1,3 +1,5 @@
+import { isValidTime } from "./date";
+
 function maskCnpj(cnpj: string): string{
   cnpj = cnpj.replace(/\D/g, "");
   cnpj = cnpj.replace(/(\d{1,14})\d*/g, "$1");
@@ -65,6 +67,19 @@ function maskInteger(text: string): number {
   return isNaN(number) ? 0 : number;
 }
 
+function maskTime(text: string): string {
+  text = text.replace(/\D/g, "");
+  text = text.replace(/[0]*([123456789]\d{0,3})\d*/g, "$1");
+  text = text.padStart(4,'0');
+  text = text.replace(/(\d{2})(\d+)/, "$1:$2");
+
+  if (!isValidTime(text)) {
+    text = '00:00';
+  }
+
+  return text;
+}
+
 function removeMask(text: string) {
   return text.replace(/\D/g, "");
 }
@@ -87,4 +102,4 @@ function formatNumberToAmount(value: number): string {
   });
 }
 
-export { maskCnpj, maskCpf, maskCpfCnpj, maskCelular, maskNumerica, maskInteger, removeMask, formatDateToString, formatNumberToReal, formatNumberToAmount };
+export { maskCnpj, maskCpf, maskCpfCnpj, maskCelular, maskNumerica, maskInteger, maskTime, removeMask, formatDateToString, formatNumberToReal, formatNumberToAmount };

@@ -11,6 +11,7 @@ import { Login } from '../pages/LoggedOut/Login';
 import { NewUser } from '../pages/LoggedOut/NewUser';
 import { ResetPassword } from '../pages/LoggedOut/ResetPassword';
 import { UserInfo } from '../pages/LoggedIn/User/Info';
+import { ActiveCreate } from '../pages/LoggedIn/Active/Create';
 
 const LoginLayout = () => {
   const user = useAuth().getCurrentUser();
@@ -70,6 +71,7 @@ const RoutesApp = () => {
 
         <Route element={<ProtectedRoute />}>
           <Route path="/home" element={<Home />} />
+          <Route path="/active/create" element={<ActiveCreate />} />
           <Route path="/user/info" element={<UserInfo />} />
           <Route path="/user/list" element={<UserList />} />
           <Route path="/user/create/:mode/:user_id" element={<UserCreate />} />
