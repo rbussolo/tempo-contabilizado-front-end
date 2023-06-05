@@ -60,14 +60,16 @@ function Tag({ name, startTime, stopTime }: ITag){
   }
 
   useEffect(() => {
-    setSpendTime(timeDifference(startTime, stopTime));
+    const difference = timeDifference(startTime, stopTime);
+    
+    setSpendTime(difference);
 
     if (!stopTime) {
       setInterval(function() {
         setSpendTime(timeDifference(startTime, stopTime));
       }, 1000);
     }
-  }, []);
+  }, [startTime, stopTime]);
 
   return (
     <div className="tag-container" key={"tag_" + name}>
@@ -109,7 +111,6 @@ function Home() {
     load.showLoading();
 
     api.get("/activities", { params: filter }).then(response => {
-      console.log(response.data)
       setData(response.data);
     }).catch((err) => {
       Alert.showAxiosError(err);
@@ -121,6 +122,26 @@ function Home() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  function startActivity(id: number) {
+    api.post("/activities/start", { data: { id } }).then(response => {
+      fetchData();
+    }).catch((err) => {
+      Alert.showAxiosError(err);
+    }).finally(() => {
+      load.hideLoading();
+    });
+  }
+
+  function stopActivity(id: number) {
+    api.post("/activities/stop", { data: { id } }).then(response => {
+      fetchData();
+    }).catch((err) => {
+      Alert.showAxiosError(err);
+    }).finally(() => {
+      load.hideLoading();
+    });
+  }
 
   return (
     <ContainerForm className="container">
@@ -163,9 +184,15 @@ function Home() {
                       })}
                     </div>
                   </div>
-                  <div className="active-action">
-                    <span>Pausar</span>
-                  </div>
+                    { active.stats !== 'in_progress' ? (
+                      <div className="active-action action-action-start" onClick={() => startActivity(active.id)}>
+                        <span>Continuar</span>
+                      </div>
+                    ) : (
+                      <div className="active-action action-action-stop" onClick={() => stopActivity(active.id)}>
+                        <span>Pausar</span>
+                      </div>
+                    )}
                 </ContainerActive>
               </React.Fragment>
             );

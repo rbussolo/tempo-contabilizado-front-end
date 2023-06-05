@@ -65,15 +65,31 @@ export const ContainerActive = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    min-width: 105px;
 
     cursor: pointer;
 
-    padding: 1.5rem;
-    background-color: #e74c3c;
-    color: #fff;
-
-    border: 1px solid #c0392b;
+    padding: 0.75rem;
+    
     border-radius: var(--border-radius);
+
+    transition: 0.3s;
+    
+    &.action-action-stop {
+      color: #fff;
+      background-color: #e74c3c;
+      border: 1px solid #c0392b;
+    }
+
+    &.action-action-start {
+      color: #fff;
+      background-color: #27ae60;
+      border: 1px solid #2ecc71;
+    }
+
+    &:hover {
+      filter: brightness(80%);
+    }
   }
 
   & + & {
