@@ -7,6 +7,7 @@ import { useLoading } from "../../../contexts/LoadingProvider";
 import { api } from "../../../services/api";
 import { Alert } from "../../../utils/alert";
 import { getDateFormatted } from "../../../utils/date";
+import { IconDelete, IconUpdate } from "../../../components/Table";
 
 interface ITag {
   name: string;
@@ -17,6 +18,7 @@ interface ITag {
 function Tag({ name, startTime, stopTime }: ITag){
   const description = startTime + (stopTime ? " - " + stopTime : "");
   const [spendTime, setSpendTime] = useState<string>("");
+  let intervalID: NodeJS.Timer;
   
   function timeDifference(startTime: string, stopTime?: string) {
     if (stopTime) {
@@ -65,10 +67,12 @@ function Tag({ name, startTime, stopTime }: ITag){
     setSpendTime(difference);
 
     if (!stopTime) {
-      setInterval(function() {
+      intervalID = setInterval(function() {
         setSpendTime(timeDifference(startTime, stopTime));
       }, 1000);
     }
+
+    return () => clearInterval(intervalID);
   }, [startTime, stopTime]);
 
   return (
@@ -143,13 +147,23 @@ function Home() {
     });
   }
 
+  function deleteActivity(id: number) {
+    api.delete("/activities/" + id).then(response => {
+      fetchData();
+    }).catch((err) => {
+      Alert.showAxiosError(err);
+    }).finally(() => {
+      load.hideLoading();
+    });
+  }
+
   return (
     <ContainerForm className="container">
       <TitlePage title="Atividades do dia" action={{ description: "Nova Atividade", onClick: () => { navigate("/active/create") } }} />
 
       <hr />
 
-      { data.activities ? (
+      { data.activities && data.activities.length ? (
         <>
           { data.activities.map((active, index) => {
             const d = new Date(active.date);
@@ -170,18 +184,24 @@ function Home() {
                     </div>
                   </div>
                   <div className="active-body">
-                    <div className="active-body-description">
-                      <span>Descrição: </span>{ active.description }
+                    <div className="active-body-main">
+                      <div className="active-body-description">
+                        <span>Descrição: </span>{ active.description }
+                      </div>
+                      <div className="active-body-tags">
+                        <span>Tags: </span>
+                        { active.tags.map((tag, index) => {
+                          return (
+                            <div className="active-body-tag" key={"tag_" + index}>
+                              { tag }
+                            </div>
+                          )
+                        })}
+                      </div>
                     </div>
-                    <div className="active-body-tags">
-                      <span>Tags: </span>
-                      { active.tags.map((tag, index) => {
-                        return (
-                          <div className="active-body-tag" key={"tag_" + index}>
-                            { tag }
-                          </div>
-                        )
-                      })}
+                    <div className="active-body-actions">
+                      <IconUpdate title="Editar" to={`/active/edit/${active.id}`} />
+                      <IconDelete title="Remover" onclick={() => { deleteActivity(active.id) }} />
                     </div>
                   </div>
                     { active.stats !== 'in_progress' ? (
@@ -190,7 +210,7 @@ function Home() {
                       </div>
                     ) : (
                       <div className="active-action action-action-stop" onClick={() => stopActivity(active.id)}>
-                        <span>Pausar</span>
+                        <span>Parar</span>
                       </div>
                     )}
                 </ContainerActive>
@@ -198,25 +218,29 @@ function Home() {
             );
           }) }
           
-          <hr style={{marginTop: "20px"}}/>
+          { false ? (
+            <>
+              <hr style={{ marginTop: "20px" }} />
 
-          <div>
-            <h4>Tempo gasta por tags</h4>
+              <div>
+                <h4>Tempo gasta por tags</h4>
 
-            <hr style={{ marginTop: "15px" }} />
+                <hr style={{ marginTop: "15px" }} />
 
-            <ContainerTags>
-              { data.activities.map((active, index) => {
-                const tags = active.tags.map((tag, index) => {
-                  return (
-                    <Tag key={"key_" + tag} name={tag} startTime={active.startTime} stopTime={active.stopTime} />
-                  )
-                })
+                <ContainerTags>
+                  {data.activities.map((active, index) => {
+                    const tags = active.tags.map((tag, index) => {
+                      return (
+                        <Tag key={"key_" + tag} name={tag} startTime={active.startTime} stopTime={active.stopTime} />
+                      )
+                    })
 
-                return tags;
-              }) }
-            </ContainerTags>
-          </div>
+                    return tags;
+                  })}
+                </ContainerTags>
+              </div>
+            </>
+          ) : null }
         </>
       ) : (
         <>

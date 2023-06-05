@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../../../components/Button";
 import { ButtonsFilter } from "../../../../components/Button/styles";
 import { InputForm } from "../../../../components/InputGroup";
@@ -11,16 +11,19 @@ import { api } from "../../../../services/api";
 import { Alert } from "../../../../utils/alert";
 import { maskTime } from "../../../../utils/mask";
 import { getCurrentDate, getCurrentTime } from "../../../../utils/date";
+import { useEffect } from "react";
+import { Activity } from "../../../../services/activities";
 
-const ActiveCreate = function () {
+const ActiveEdit = function () {
   const navigate = useNavigate();
+  const { activity_id } = useParams();
   const load = useLoading();
 
   const formik = useFormik({
     initialValues: {
-      date: getCurrentDate(),
+      date: "",
       description: "",
-      startTime: getCurrentTime(),
+      startTime: "",
       stopTime: "",
       tags: "",
     },
@@ -38,7 +41,7 @@ const ActiveCreate = function () {
       load.showLoading();
 
       const method = 'post';
-      const url = "/activities";
+      const url = `/activities/${activity_id}`;
       const active = { date, description, startTime, stopTime, tags };
 
       api.request({ url, method, data: active }).then(response => {
@@ -51,9 +54,37 @@ const ActiveCreate = function () {
     }
   });
 
+  useEffect(() => {
+    load.showLoading();
+
+    api.get(`/activities/${activity_id}`).then(response => {
+      const activity = response.data as Activity;
+      const date = new Date(activity.date);
+      let tags = "";
+
+      for (let i = 0; i < activity.tags.length; i++) {
+        tags += activity.tags[i];
+
+        if (i + 1 < activity.tags.length) {
+          tags += " ";
+        }
+      }
+      
+      formik.setFieldValue("date", date.toISOString().substring(0, 10));
+      formik.setFieldValue("description", activity.description);
+      formik.setFieldValue("startTime", activity.startTime);
+      formik.setFieldValue("stopTime", activity.stopTime);
+      formik.setFieldValue("tags", tags);
+    }).catch(err => {
+      Alert.showAxiosError(err);
+    }).finally(() => {
+      load.hideLoading();
+    });
+  }, []);
+
   return (
     <ContainerForm onSubmit={formik.handleSubmit} className="container needs-validation" noValidate>
-      <TitlePage title="Nova Atividade" />
+      <TitlePage title="Atualização de uma Atividade" />
 
       <hr />
 
@@ -102,4 +133,4 @@ const ActiveCreate = function () {
   );
 }
 
-export { ActiveCreate }
+export { ActiveEdit }

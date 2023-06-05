@@ -40,24 +40,38 @@ export const ContainerActive = styled.div`
     border-radius: var(--border-radius);
 
     display: flex;
-    flex-direction: column;
 
-    .active-body-description {
+    .active-body-main {
       flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+
+      .active-body-description {
+        flex-grow: 1;
+      }
+
+      .active-body-tags {
+        display: flex;
+        gap: 0.5rem;
+
+        .active-body-tag {
+          padding: 0rem 0.25rem;
+          background-color: #3498db;
+          color: #fff;
+
+          border: 1px solid #1c8bd5;
+          border-radius: var(--border-radius);
+        }
+      }
     }
 
-    .active-body-tags {
+    .active-body-actions {
       display: flex;
-      gap: 0.5rem;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
 
-      .active-body-tag {
-        padding: 0rem 0.25rem;
-        background-color: #3498db;
-        color: #fff;
-
-        border: 1px solid #1c8bd5;
-        border-radius: var(--border-radius);
-      }
+      font-size: 30px;
     }
   }
 
