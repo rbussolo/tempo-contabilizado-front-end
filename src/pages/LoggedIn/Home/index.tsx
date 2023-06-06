@@ -84,6 +84,127 @@ function Tag({ name, startTime, stopTime }: ITag){
   )
 }
 
+interface IActivityItem {
+  activity: IActivity;
+  deleteActivity: (id: number) => void;
+  startActivity: (id: number) => void;
+  stopActivity: (id: number) => void;
+}
+
+interface ITask {
+  id: number;
+  description: string;
+  startTime: string;
+  stopTime: string;
+  duration?: number;
+  stats: string;
+}
+
+interface ITasks {
+  count: number;
+  tasks: ITask[]
+}
+
+function ActivityItem({ activity, deleteActivity, startActivity, stopActivity }: IActivityItem) {
+  const load = useLoading();
+  const d = new Date(activity.date);
+  const headerText = activity.stopTime ? activity.startTime + ' - ' + activity.stopTime : activity.startTime;
+  const [expanded, setExpanded] = useState(false);
+  const [listTask, setListTask] = useState<ITasks>({
+    count: 0,
+    tasks: []
+  });
+
+  function showTasks(id: number, expanded: boolean) {
+    setExpanded(expanded);
+
+    if(expanded && !listTask.count){
+      load.showLoading();
+
+      api.get(`/tasks/${id}`).then(response => {
+        setListTask(response.data);
+      }).catch((err) => {
+        Alert.showAxiosError(err);
+      }).finally(() => {
+        load.hideLoading();
+      });
+    }
+  }
+
+  return (
+      <ContainerActive>
+        <div className="active-header">
+          <div className="active-header-date">
+            {getDateFormatted(d)}
+          </div>
+          <div className="active-header-time">
+            {headerText}
+          </div>
+          <div className="active-header-duration">
+            {activity.duration ? activity.duration + " min" : "Em atividade"}
+          </div>
+        </div>
+        <div className="active-body">
+          <div className="active-body-main">
+            <div className="active-body-description">
+              <span>Descrição: </span>{activity.description}
+            </div>
+            <div className="active-body-tags">
+              <span>Tags: </span>
+              {activity.tags.map((tag, index) => {
+                return (
+                  <div className="active-body-tag" key={"tag_" + index}>
+                    {tag}
+                  </div>
+                )
+              })}
+            </div>
+            <div className="active-body-tasks">
+              <span>Tarefas:</span>
+              { expanded ? (
+                <i className="bi bi-arrow-up-square-fill" onClick={() => showTasks(activity.id, false)}></i>
+              ) : (
+                <i className="bi bi-arrow-down-square-fill" onClick={() => showTasks(activity.id, true)}></i>
+              ) }
+              <i className="bi bi-plus-square-fill icon-add"></i>
+            </div>
+            <div id={`taskGroup_${activity.id}`} className={`active-body-tasks-group ${expanded ? "active-body-tasks-show" : "active-body-tasks-hide"}`}>
+              { listTask.count ? (
+                <div className="task-container">
+                  { listTask.tasks.map((task, index) => {
+                    return (
+                      <div className="task-item" key={task.id}>
+                        <span>{ task.stopTime ? task.startTime + ' - ' + task.stopTime : task.startTime }</span>
+                        <span>{ task.description }</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div>
+                  <span>Sem tarefas cadastradas</span>
+                </div>
+              ) }
+            </div>
+          </div>
+          <div className="active-body-actions">
+            <IconUpdate title="Editar" to={`/active/edit/${activity.id}`} />
+            <IconDelete title="Remover" onclick={() => { deleteActivity(activity.id) }} />
+          </div>
+        </div>
+        {activity.stats !== 'in_progress' ? (
+          <div className="active-action action-action-start" onClick={() => startActivity(activity.id)}>
+            <span>Continuar</span>
+          </div>
+        ) : (
+          <div className="active-action action-action-stop" onClick={() => stopActivity(activity.id)}>
+            <span>Parar</span>
+          </div>
+        )}
+      </ContainerActive>
+    );
+}
+
 interface IActivity {
   id: number;
   description: string;
@@ -166,58 +287,8 @@ function Home() {
       { data.activities && data.activities.length ? (
         <>
           { data.activities.map((active, index) => {
-            const d = new Date(active.date);
-            const headerText = active.stopTime ? active.startTime + ' - ' + active.stopTime : active.startTime;
-
             return (
-              <React.Fragment key={active.id}>
-                <ContainerActive>
-                  <div className="active-header">
-                    <div className="active-header-date">
-                      { getDateFormatted(d) }
-                    </div>
-                    <div className="active-header-time">
-                      { headerText }
-                    </div>
-                    <div className="active-header-duration">
-                      { active.duration ? active.duration + " min" : "Em atividade" } 
-                    </div>
-                  </div>
-                  <div className="active-body">
-                    <div className="active-body-main">
-                      <div className="active-body-description">
-                        <span>Descrição: </span>{ active.description }
-                      </div>
-                      <div className="active-body-tags">
-                        <span>Tags: </span>
-                        { active.tags.map((tag, index) => {
-                          return (
-                            <div className="active-body-tag" key={"tag_" + index}>
-                              { tag }
-                            </div>
-                          )
-                        })}
-                      </div>
-                      <div className="active-body-tasks">
-                        <span>Tarefas:</span>
-                      </div>
-                    </div>
-                    <div className="active-body-actions">
-                      <IconUpdate title="Editar" to={`/active/edit/${active.id}`} />
-                      <IconDelete title="Remover" onclick={() => { deleteActivity(active.id) }} />
-                    </div>
-                  </div>
-                    { active.stats !== 'in_progress' ? (
-                      <div className="active-action action-action-start" onClick={() => startActivity(active.id)}>
-                        <span>Continuar</span>
-                      </div>
-                    ) : (
-                      <div className="active-action action-action-stop" onClick={() => stopActivity(active.id)}>
-                        <span>Parar</span>
-                      </div>
-                    )}
-                </ContainerActive>
-              </React.Fragment>
+              <ActivityItem key={active.id} activity={active} deleteActivity={deleteActivity} startActivity={startActivity} stopActivity={stopActivity} />
             );
           }) }
           

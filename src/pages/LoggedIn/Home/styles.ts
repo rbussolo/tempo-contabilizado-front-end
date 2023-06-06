@@ -64,6 +64,54 @@ export const ContainerActive = styled.div`
           border-radius: var(--border-radius);
         }
       }
+
+      .active-body-tasks {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        i {
+          color: #1c8bd5;
+          font-size: 20px;
+
+          cursor: pointer;
+
+          &.icon-add {
+            color: #198754;
+          }
+        }
+      }
+
+      .active-body-tasks-group {
+        overflow: hidden;
+        
+        &.active-body-tasks-hide {
+          max-height: 0;
+        }
+
+        &.active-body-tasks-show {
+          max-height: initial;
+        }
+      }
+
+      .task-container {
+        padding: 0rem 1rem;
+        
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .task-item {
+          padding: 0rem 0.5rem;
+          background-color: #fff;
+
+          border: 1px solid var(--border-color);
+          border-radius: var(--border-radius);
+
+          display: flex;
+          gap: 5px;
+        }
+      }
     }
 
     .active-body-actions {
