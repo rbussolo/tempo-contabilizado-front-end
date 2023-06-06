@@ -33,7 +33,7 @@ export const ContainerActive = styled.div`
   div.active-body {
     flex-grow: 1;
 
-    padding: 1.5rem;
+    padding: 0.75rem 1.5rem;
     background-color: #f5f6f6;
 
     border: 1px solid var(--border-color);
@@ -45,6 +45,7 @@ export const ContainerActive = styled.div`
       flex-grow: 1;
       display: flex;
       flex-direction: column;
+      gap: 5px;
 
       .active-body-description {
         flex-grow: 1;

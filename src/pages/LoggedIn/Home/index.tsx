@@ -198,6 +198,9 @@ function Home() {
                           )
                         })}
                       </div>
+                      <div className="active-body-tasks">
+                        <span>Tarefas:</span>
+                      </div>
                     </div>
                     <div className="active-body-actions">
                       <IconUpdate title="Editar" to={`/active/edit/${active.id}`} />
