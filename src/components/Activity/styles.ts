@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-export const ContainerActive = styled.div`
+export const ContainerActivity = styled.div`
   display: flex;
   gap: 1rem;
 
-  div.active-header {
+  div.activity-header {
     width: 150px;
 
     display: flex;
@@ -21,16 +21,16 @@ export const ContainerActive = styled.div`
       text-align: center;
     }
 
-    .active-header-date {
+    .activity-header-date {
       font-size: 1.25rem;
     }
 
-    .active-header-time {
+    .activity-header-time {
       font-weight: bold;
     }
   }
 
-  div.active-body {
+  div.activity-body {
     flex-grow: 1;
 
     padding: 0.75rem 1.5rem;
@@ -41,21 +41,21 @@ export const ContainerActive = styled.div`
 
     display: flex;
 
-    .active-body-main {
+    .activity-body-main {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
       gap: 5px;
 
-      .active-body-description {
+      .activity-body-description {
         flex-grow: 1;
       }
 
-      .active-body-tags {
+      .activity-body-tags {
         display: flex;
         gap: 0.5rem;
 
-        .active-body-tag {
+        .activity-body-tag {
           padding: 0rem 0.25rem;
           background-color: #3498db;
           color: #fff;
@@ -65,7 +65,7 @@ export const ContainerActive = styled.div`
         }
       }
 
-      .active-body-tasks {
+      .activity-body-tasks {
         display: flex;
         align-items: center;
         gap: 5px;
@@ -82,14 +82,14 @@ export const ContainerActive = styled.div`
         }
       }
 
-      .active-body-tasks-group {
+      .activity-body-tasks-group {
         overflow: hidden;
         
-        &.active-body-tasks-hide {
+        &.activity-body-tasks-hide {
           max-height: 0;
         }
 
-        &.active-body-tasks-show {
+        &.activity-body-tasks-show {
           max-height: initial;
         }
       }
@@ -124,7 +124,7 @@ export const ContainerActive = styled.div`
       }
     }
 
-    .active-body-actions {
+    .activity-body-actions {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -134,7 +134,7 @@ export const ContainerActive = styled.div`
     }
   }
 
-  div.active-action {
+  div.activity-action {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -148,13 +148,13 @@ export const ContainerActive = styled.div`
 
     transition: 0.3s;
     
-    &.action-action-stop {
+    &.activity-action-stop {
       color: #fff;
       background-color: #e74c3c;
       border: 1px solid #c0392b;
     }
 
-    &.action-action-start {
+    &.activity-action-start {
       color: #fff;
       background-color: #27ae60;
       border: 1px solid #2ecc71;

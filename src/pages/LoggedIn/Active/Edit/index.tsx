@@ -10,7 +10,6 @@ import { ContainerForm } from "../../../../global.styles";
 import { api } from "../../../../services/api";
 import { Alert } from "../../../../utils/alert";
 import { maskTime } from "../../../../utils/mask";
-import { getCurrentDate, getCurrentTime } from "../../../../utils/date";
 import { useEffect } from "react";
 import { Activity } from "../../../../services/activities";
 
