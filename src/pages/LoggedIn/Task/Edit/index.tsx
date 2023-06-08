@@ -11,22 +11,20 @@ import { api } from "../../../../services/api";
 import { Alert } from "../../../../utils/alert";
 import { maskTime } from "../../../../utils/mask";
 import { useEffect } from "react";
-import { Activity } from "../../../../services/activities";
+import { Task } from "../../../../services/tasks";
 
-const ActiveEdit = function () {
+const TaskEdit = function () {
   const navigate = useNavigate();
-  const { activity_id } = useParams();
+  const { task_id } = useParams();
   const load = useLoading();
 
   const formik = useFormik({
     initialValues: {
-      date: "",
       description: "",
       startTime: "",
       stopTime: "",
-      tags: "",
     },
-    onSubmit: ({ date, description, startTime, stopTime, tags }) => {
+    onSubmit: ({ description, startTime, stopTime }) => {
       const form = document.querySelector("form") as HTMLFormElement;
 
       if (!form.checkValidity()) {
@@ -40,10 +38,10 @@ const ActiveEdit = function () {
       load.showLoading();
 
       const method = 'post';
-      const url = `/activities/${activity_id}`;
-      const active = { date, description, startTime, stopTime, tags };
+      const url = `/tasks/${task_id}`;
+      const task = { description, startTime, stopTime };
 
-      api.request({ url, method, data: active }).then(response => {
+      api.request({ url, method, data: task }).then(response => {
         navigate("/home");
       }).catch(err => {
         Alert.showAxiosError(err);
@@ -56,24 +54,12 @@ const ActiveEdit = function () {
   useEffect(() => {
     load.showLoading();
 
-    api.get(`/activities/${activity_id}`).then(response => {
-      const activity = response.data as Activity;
-      const date = new Date(activity.date);
-      let tags = "";
-
-      for (let i = 0; i < activity.tags.length; i++) {
-        tags += activity.tags[i];
-
-        if (i + 1 < activity.tags.length) {
-          tags += " ";
-        }
-      }
+    api.get(`/tasks/${task_id}`).then(response => {
+      const task = response.data as Task;
       
-      formik.setFieldValue("date", date.toISOString().substring(0, 10));
-      formik.setFieldValue("description", activity.description);
-      formik.setFieldValue("startTime", activity.startTime);
-      formik.setFieldValue("stopTime", activity.stopTime);
-      formik.setFieldValue("tags", tags);
+      formik.setFieldValue("description", task.description);
+      formik.setFieldValue("startTime", task.startTime);
+      formik.setFieldValue("stopTime", task.stopTime);
     }).catch(err => {
       Alert.showAxiosError(err);
     }).finally(() => {
@@ -83,7 +69,7 @@ const ActiveEdit = function () {
 
   return (
     <ContainerForm onSubmit={formik.handleSubmit} className="container needs-validation" noValidate>
-      <TitlePage title="Atualização de uma Atividade" />
+      <TitlePage title="Atualização de uma Tarefa" />
 
       <hr />
 
@@ -91,13 +77,6 @@ const ActiveEdit = function () {
         type="text"
         placeholder="Descrição da Atividade"
         value={formik.values.description}
-        onChange={formik.handleChange}
-        required
-      />
-
-      <InputForm label="Data" name="date"
-        type="date"
-        value={formik.values.date}
         onChange={formik.handleChange}
         required
       />
@@ -117,13 +96,6 @@ const ActiveEdit = function () {
         onChange={(e) => formik.setFieldValue("stopTime", maskTime(e.target.value))}
       />
 
-      <InputForm label="Tags" name="tags"
-        type="text"
-        placeholder="Tags separadas por espaço ou virgula"
-        value={formik.values.tags}
-        onChange={formik.handleChange}
-      />
-
       <ButtonsFilter>
         <Button type="submit" buttonClass="btn-primary" isLoading={false} label="Confirmar" />
         <Button buttonClass="btn-secondary" label="Voltar" onClick={() => navigate("/home")} />
@@ -132,4 +104,4 @@ const ActiveEdit = function () {
   );
 }
 
-export { ActiveEdit }
+export { TaskEdit }

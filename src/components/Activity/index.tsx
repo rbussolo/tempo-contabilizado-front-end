@@ -33,6 +33,7 @@ interface IActivity {
   duration?: number;
   stats: string;
   tags: string[];
+  tasks: ITask[];
 }
 
 interface IListActivities {
@@ -41,6 +42,7 @@ interface IListActivities {
 }
 
 interface IListTasks {
+  activity_id: number;
   tasks: ITask[];
   handleDeleteTask: (id: number) => void;
 }
@@ -65,7 +67,7 @@ function TaskItem({ task, handleDeleteTask }: ITaskItem) {
   );
 }
 
-function ListTasks({ tasks, handleDeleteTask }: IListTasks) {
+function ListTasks({ activity_id, tasks, handleDeleteTask }: IListTasks) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -77,7 +79,7 @@ function ListTasks({ tasks, handleDeleteTask }: IListTasks) {
         ) : (
           <i className="bi bi-arrow-down-square-fill" onClick={() => setExpanded(true)}></i>
         ) }
-        <Link to='/task/create' title='Adicionar'>
+        <Link to={`/task/create/${activity_id}`} title='Adicionar'>
           <i className="bi bi-plus-square-fill icon-add"></i>
         </Link>
       </div>
@@ -105,16 +107,6 @@ function ActivityItem({ activity, handleDeleteActivity, handleStartActivity, han
   const timeDescription = activity.stopTime ? activity.startTime + ' - ' + activity.stopTime : activity.startTime;
   const durationDescription = activity.duration ? activity.duration + " min" : "Em atividade";
   
-  const [tasks, setTasks] = useState<ITask[]>([]);
-
-  useEffect(() => {
-    api.get(`/tasks/${activity.id}`).then(response => {
-      setTasks(response.data.tasks);
-    }).catch((err) => {
-      Alert.showAxiosError(err);
-    });
-  }, []);
-
   return (
     <ContainerActivity>
       <div className="activity-header">
@@ -143,10 +135,10 @@ function ActivityItem({ activity, handleDeleteActivity, handleStartActivity, han
               )
             }) }
           </div>
-          <ListTasks tasks={tasks} handleDeleteTask={handleDeleteTask} />
+          <ListTasks activity_id={activity.id} tasks={activity.tasks} handleDeleteTask={handleDeleteTask} />
         </div>
         <div className="activity-body-actions">
-          <IconUpdate title="Editar" to={`/active/edit/${activity.id}`} />
+          <IconUpdate title="Editar" to={`/activity/edit/${activity.id}`} />
           <IconDelete title="Remover" onclick={() => { handleDeleteActivity(activity.id) }} />
         </div>
       </div>

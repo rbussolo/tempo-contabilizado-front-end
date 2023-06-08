@@ -11,8 +11,10 @@ import { Login } from '../pages/LoggedOut/Login';
 import { NewUser } from '../pages/LoggedOut/NewUser';
 import { ResetPassword } from '../pages/LoggedOut/ResetPassword';
 import { UserInfo } from '../pages/LoggedIn/User/Info';
-import { ActiveCreate } from '../pages/LoggedIn/Active/Create';
-import { ActiveEdit } from '../pages/LoggedIn/Active/Edit';
+import { ActivityCreate } from '../pages/LoggedIn/Activity/Create';
+import { ActivityEdit } from '../pages/LoggedIn/Activity/Edit';
+import { TaskCreate } from '../pages/LoggedIn/Task/Create';
+import { TaskEdit } from '../pages/LoggedIn/Task/Edit';
 
 const LoginLayout = () => {
   const user = useAuth().getCurrentUser();
@@ -72,8 +74,10 @@ const RoutesApp = () => {
 
         <Route element={<ProtectedRoute />}>
           <Route path="/home" element={<Home />} />
-          <Route path="/active/create" element={<ActiveCreate />} />
-          <Route path="/active/edit/:activity_id" element={<ActiveEdit />} />
+          <Route path="/activity/create" element={<ActivityCreate />} />
+          <Route path="/activity/edit/:activity_id" element={<ActivityEdit />} />
+          <Route path="/task/create/:activity_id" element={<TaskCreate />} />
+          <Route path="/task/edit/:task_id" element={<TaskEdit />} />
           <Route path="/user/info" element={<UserInfo />} />
           <Route path="/user/list" element={<UserList />} />
           <Route path="/user/create/:mode/:user_id" element={<UserCreate />} />

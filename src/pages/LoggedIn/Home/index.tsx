@@ -33,7 +33,7 @@ function Home() {
 
   return (
     <ContainerForm className="container">
-      <TitlePage title="Atividades do dia" action={{ description: "Nova Atividade", onClick: () => { navigate("/active/create") } }} />
+      <TitlePage title="Atividades do dia" action={{ description: "Nova Atividade", onClick: () => { navigate("/activity/create") } }} />
 
       <hr />
 
