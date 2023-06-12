@@ -75,6 +75,16 @@ export const ContainerCalendar = styled.div`
           &.calendar-no-current-month {
             opacity: 0.5;
           }
+
+          &.day-with-activity {
+            background-color: #2ecc71;
+            border-color: #27ae60;
+          }
+
+          &.day-with-problem {
+            background-color: #e74c3c;
+            border-color: #c0392b;
+          }
         }
       }
     }

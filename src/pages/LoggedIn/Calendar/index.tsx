@@ -3,29 +3,42 @@ import { TitlePage } from "../../../components/TitlePage";
 import { ContainerForm } from "../../../global.styles";
 import { getCurrentDateWithoutTimezone } from "../../../utils/date";
 import { ContainerCalendar } from "./styles";
+import { useLoading } from "../../../contexts/LoadingProvider";
+import { api } from "../../../services/api";
+import { Alert } from "../../../utils/alert";
 
 interface IDay {
   day: number;
+  date: Date;
   currentMonth: boolean;
+  calendar?: {
+    id: number;
+    date: Date;
+    stats: string;
+  };
 }
 
-interface IDaysOfMonth {
-  month: [IDay[]];
+interface ICalendar {
+  weeks: [IDay[]];
 }
 
 function Calendar() {
+  const load = useLoading();
+  
   const [date, setDate] = useState<Date>(new Date());
   const [dateDescription, setDateDescription] = useState("");
-  const [daysOfMonth, setDaysOfMonth] = useState<IDaysOfMonth>({
-    month: [[]]
+  const [calendar, setCalendar] = useState<ICalendar>({
+    weeks: [[]]
   });
-  
+
   function lastMonth(month: number, year: number) {
     const d = new Date();
     d.setFullYear(year);
     d.setMonth(month - 2);
     
-    setNewDate(d);
+    fetchData(d).then(() => {
+      setNewDate(d);
+    });
   }
 
   function nextMonth(month: number, year: number) {
@@ -33,75 +46,40 @@ function Calendar() {
     d.setFullYear(year);
     d.setMonth(month);
 
-    setNewDate(d);
+    fetchData(d).then(() => {
+      setNewDate(d);
+    });
+  }
+
+  async function fetchData(date: Date) {
+    const date_initial = new Date(date.getFullYear(), date.getMonth(), 1);
+    const date_final = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+    const filter = { date_initial: date_initial.toISOString(), date_final: date_final.toISOString() };
+
+    load.showLoading();
+
+    api.get("/calendar", { params: filter }).then(response => {
+      console.log(response.data)
+      setCalendar(response.data);
+    }).catch((err) => {
+      Alert.showAxiosError(err);
+    }).finally(() => {
+      load.hideLoading();
+    });
   }
 
   useEffect(() => {
     const d = getCurrentDateWithoutTimezone();
 
-    setNewDate(d);
+    fetchData(d).then(() => {
+      setNewDate(d);
+    });
   }, []);
 
-  function setNewDate(date: Date) {
-    setDate(date);
-    setDateDescription(date.toLocaleDateString('pt-BR', { month: 'long' }) + '/' + date.getFullYear());
-    
-    const lastDayOfWeek = 6;
-    const currentMonth = date.getMonth();
-    const daysOfMonth: IDaysOfMonth = {
-      month: [[]]
-    };
-
-    let week = 0;
-
-    // Volta para o ultimo dia do mês anterior
-    date.setDate(0);
-
-    // Verifica se não é sabado
-    if (date.getDay() < 6) {
-      const lastDayOfPreviewMonth = date.getDate();
-      date.setDate(date.getDate() - date.getDay());
-      const lessDayOfPreviewMonth = date.getDate();
-
-      for (let i = lessDayOfPreviewMonth; i <= lastDayOfPreviewMonth; i++) {
-        const day: IDay = {
-          currentMonth: false,
-          day: date.getDate()
-        }
-
-        daysOfMonth.month[week].push(day);
-
-        // Vai para o proximo dia
-        date.setDate(date.getDate() + 1);
-      }
-    } else {
-      // Apenas avança e vai para o proximo mês
-      date.setDate(date.getDate() + 1);
-    }
-
-    // Agora volta para o mês atual e começa adicionar os dias de acordo com a semana
-    while (week < 6) {
-      const currentDayOfWeek = date.getDay();
-
-      for (let i = currentDayOfWeek; i <= lastDayOfWeek; i++) {
-        const day: IDay = {
-          currentMonth: date.getMonth() === currentMonth,
-          day: date.getDate()
-        }
-
-        daysOfMonth.month[week].push(day);
-
-        // Vai para o proximo dia
-        date.setDate(date.getDate() + 1);
-      }
-
-      if (week < 6) {
-        week += 1;
-        daysOfMonth.month.push([]);
-      }
-    }
-
-    setDaysOfMonth(daysOfMonth);
+  function setNewDate(d: Date) {
+    setDate(d);
+    setDateDescription(d.toLocaleDateString('pt-BR', { month: 'long' }) + '/' + date.getFullYear());
   }
 
   return (
@@ -147,12 +125,22 @@ function Calendar() {
             </div>
           </div>
           <div className="calendar-body-day-of-month">
-            { daysOfMonth.month.map((days, index) => {
+            { calendar.weeks.map((week, index) => {
               return (
                 <div key={`week_${index}`} className="calendar-month-week">
-                  {days.map(day => {
+                  { week.map(day => {
+                    let classCalendar = "";
+
+                    if (day.calendar && day.calendar.stats !== 'no_activity') {
+                      if (day.calendar.stats === 'activity_with_problem') {
+                        classCalendar = 'day-with-problem';
+                      } else {
+                        classCalendar = 'day-with-activity';
+                      }
+                    }
+
                     return(
-                      <div key={day.day} className={`calendar-month-week-day ${day.currentMonth ? "calendar-current-month" : "calendar-no-current-month"}`}>
+                      <div key={day.day} className={`calendar-month-week-day ${day.currentMonth ? "calendar-current-month" : "calendar-no-current-month"} ${classCalendar}`}>
                         <span>{day.day}</span>
                       </div>
                     )
