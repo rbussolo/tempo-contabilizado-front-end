@@ -6,6 +6,7 @@ import { useLoading } from "../../../contexts/LoadingProvider";
 import { api } from "../../../services/api";
 import { Alert } from "../../../utils/alert";
 import { ListActivities } from "../../../components/Activity";
+import { getCurrentDateWithoutTimezone } from "../../../utils/date";
 
 function Home() {
   const navigate = useNavigate();
@@ -13,9 +14,9 @@ function Home() {
   const [activities, setActivities] = useState<[]>([]);
  
   function fetchData() {
-    const date = new Date();
+    const date = getCurrentDateWithoutTimezone();
     const filter = { date: date.toISOString() }
-    
+
     load.showLoading();
 
     api.get("/activities", { params: filter }).then(response => {

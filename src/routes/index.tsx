@@ -15,6 +15,7 @@ import { ActivityCreate } from '../pages/LoggedIn/Activity/Create';
 import { ActivityEdit } from '../pages/LoggedIn/Activity/Edit';
 import { TaskCreate } from '../pages/LoggedIn/Task/Create';
 import { TaskEdit } from '../pages/LoggedIn/Task/Edit';
+import { Calendar } from '../pages/LoggedIn/Calendar';
 
 const LoginLayout = () => {
   const user = useAuth().getCurrentUser();
@@ -78,6 +79,7 @@ const RoutesApp = () => {
           <Route path="/activity/edit/:activity_id" element={<ActivityEdit />} />
           <Route path="/task/create/:activity_id" element={<TaskCreate />} />
           <Route path="/task/edit/:task_id" element={<TaskEdit />} />
+          <Route path="/calendar" element={<Calendar />} />
           <Route path="/user/info" element={<UserInfo />} />
           <Route path="/user/list" element={<UserList />} />
           <Route path="/user/create/:mode/:user_id" element={<UserCreate />} />

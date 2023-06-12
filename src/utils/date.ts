@@ -1,3 +1,12 @@
+function getCurrentDateWithoutTimezone(): Date {
+  const d = new Date();
+
+  // Remove o timezone
+  d.setUTCHours(d.getUTCHours() - (d.getTimezoneOffset() / 60));
+
+  return d;
+}
+
 function getCurrentDate(): string {
   const now = new Date();
 
@@ -40,4 +49,4 @@ function isValidTime(time: string): boolean {
   return true;
 }
 
-export { getCurrentDate, getCurrentTime, isValidTime, getDateFormatted }
+export { getCurrentDateWithoutTimezone, getCurrentDate, getCurrentTime, isValidTime, getDateFormatted }
